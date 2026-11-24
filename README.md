@@ -31,7 +31,7 @@ full decompile in `../decomp/src/fw_*.c`.
 | PA0 | high at boot = charge-only loop (FUN_08005444) | held low |
 | SPI-NAND | Kioxia 2 Gbit 98 CB/EB, 2 KB pages, 64 pages/block; CS PE2, SCK PB11, MOSI PB10, MISO PA15 (x2 read: PA15+PB10) | `SpiNand168.cs` |
 | RF transceiver | 3-wire SCK PB3, SDA PB4, CS PB5; self test reg 0x57 = 0xA888 | `RfTransceiver.cs` (D890 model), read hook FUN_0807bca8 |
-| SCT3288 baseband | SPI2 (F1 regs), CS PB12, ready PD11, frame pending PD6; `84 A9 61` frames, MCU reads by clocking 0xA5 | `Baseband168.cs`, log out/<run>/baseband.log |
+| SCT3288 baseband | SPI2 (F1 regs), CS PB12, ready PD11, frame pending PD6; `84 A9 61` frames, MCU reads by clocking 0xA5; voice stand-in as on the D890UV (`spi2 MicHz`, `SpeakerFile`, `VoiceStatus`, `VoiceAnswer`, `ExtAmbe`) | `Baseband168.cs`, log out/<run>/baseband.log |
 | I2C (bit-bang) | SDA PB6, SCL PB7: FM broadcast receiver 0x10 (RDA5807-style), accelerometer 0x19 (LIS2DW12, WHO_AM_I 0x0F = 0x44; man down polls STATUS 0x27 / SIXD_SRC 0x3A) | `I2cBus168.cs` (`i2c Fall`, `i2c Upright`, `i2c SixD 0x41`, `i2c Orientation`) |
 | VOX detect | PD3 input (low = voice; RF chip VOX output, stock poll 0x08099B4C); idle level D3=1 in `at32f403a.repl`; `board Set "D3" false` = voice. The RF model keys TX on reg 0x56 = 2 / reg 0x30 = 0x5F64 only (reg 0x52 switch 3 is the VOX switch here) | `BoardInputs168.cs`, `RfTransceiver.cs` |
 | RTC | F1 seconds counter, IRQ 3 | `Rtc168.cs` |
