@@ -1,0 +1,21 @@
+// Custom-firmware overlay for the D168UV platform (loaded by run.py --cfw after at32f403a.repl).
+// Models the peripherals the stock boot does not need yet but the cfw uses: ADC1 + DMA sample injection, DAC (APC / RX
+// tune), TMR4 PWM TX capture, flash controller (settings / codeplug writes), emulator-only symbol FIFO and the decoded-PCM tap.
+// If the base platform gets its own model at one of these addresses, drop the line here.
+analog: Miscellaneous.D168Analog @ sysbus <0x40012400, +0x400>
+
+dac: Miscellaneous.D168Dac @ sysbus <0x40007400, +0x400>
+    AutoCapture: false
+
+// TMR4 = PWM TX-audio model (cfw TX audio = TMR4_CH4 PWM on PB9, CCR4 reloaded by DMA1 ch7);
+// run.py --cfw unregisters sysbus.timer4 first (redefining it here hangs the load)
+pwm: Miscellaneous.D168Pwm @ sysbus <0x40000800, +0x400>
+
+flashCtrl: Python.PythonPeripheral @ sysbus 0x40022000
+    size: 0x400
+    initable: true
+    filename: "MODELS/flash168.py"
+
+syms: Miscellaneous.D890SymbolSource @ sysbus <0x5FFF0600, +0x20>
+
+pcm: Miscellaneous.D890PcmTap @ sysbus <0x5FFF0700, +0x10>
