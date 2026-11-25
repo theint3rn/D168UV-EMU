@@ -175,6 +175,8 @@ def main():
                      'buf = self.GetRegister(0).RawValue; reg = self.GetRegister(1).RawValue & 0x7F; n = self.GetRegister(2).RawValue; '
                      '[acc.__setitem__((reg + i) & 0xFF, self.Bus.ReadByte(buf + i)) for i in range(n)]; '
                      'self.PC = self.GetRegister(14)"')
+    if a.cfw and a.elf:
+        lines.append("rf0 StrictRx true")        # the RF model hears only in a stock receive state (RfTransceiver.cs)
     lines += a.extra
     lines.append("include @%s" % os.path.join(HERE, "dump_state.py"))
     if os.path.exists(os.path.join(HERE, "then_cmd.py")):
